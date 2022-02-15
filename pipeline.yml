@@ -1,0 +1,36 @@
+resources:
+- name: react-app
+  type: git
+  source: 
+    uri: https://github.com/AnshulRana13/docker-react.git
+    branch: master
+- name: react-app-image
+  type: registry-image
+  source:
+    username: ((registry-username))
+    password: ((registry-password))
+    repository: ((image-repo-name))/react-app-image
+jobs:
+  - name: build-and-publish
+    public: true
+    plan:
+      - get: react-app
+      - task: build-task-image
+        privileged: true
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: vito/oci-build-task
+          input:
+          - name: react-app
+          output:
+          - name: image
+          params:
+            CONTEXT: .
+          run:
+            path: build
+      - put: react-app-image
+        params:
+          image: image/image.tar
