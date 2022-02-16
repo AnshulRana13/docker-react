@@ -26,9 +26,9 @@ jobs:
           input:
           - name: docker-react
           output:
-          - name: image
+          - name: docker-image
           params:
-            CONTEXT: docker-react/Buildfiles
+            DOCKERFILE: docker-react/Buildfiles
           run:
             path: build
       - put: react-app-image
