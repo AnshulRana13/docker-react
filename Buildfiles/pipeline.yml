@@ -28,7 +28,7 @@ jobs:
           output:
           - name: image
           params:
-            CONTEXT: .
+            CONTEXT: docker-react/Buildfiles
           run:
             path: build
       - put: react-app-image
