@@ -4,14 +4,16 @@ resources:
   source: 
     uri: https://github.com/AnshulRana13/docker-react.git
     branch: master
-- name: react-app-image
+- name: my-image
   type: registry-image
+  icon: docker
   source:
+    repository: ((image-repo-name))/my-image
     username: ((registry-username))
     password: ((registry-password))
-    repository: ((image-repo-name))/react-app-image
+  
 jobs:
-  - name: build-and-publish
+  - name: build-and-push
     public: true
     plan:
       - get: docker-react
@@ -26,11 +28,11 @@ jobs:
           input:
           - name: docker-react
           output:
-          - name: docker-image
+          - name: image
           params:
-            DOCKERFILE: docker-react/Buildfiles
+              CONTEXT: docker-react/Dockerfiles
           run:
             path: build
-      - put: react-app-image
+      - put: my-image
         params:
           image: image/image.tar
